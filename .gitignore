@@ -45,3 +45,12 @@ next-env.d.ts
 
 # markdown files
 *.md
+
+# blog drafts (exclude from git)
+/src/blog/drafts/
+/src/blog/published/
+
+# but include templates and documentation
+!/src/blog/templates/
+!/BLOG_MD_UPLOAD_TODO.md
+!/README.md
