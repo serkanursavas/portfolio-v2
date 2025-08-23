@@ -1,26 +1,155 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  font-family: 'Fira Code', monospace;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  background: #282c33;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Admin Panel Layout */
+.admin-layout {
+  min-height: 100vh;
+  background: #151c2c;
+  color: white;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* Admin Panel CSS Variables */
+.admin-layout {
+  --bg-primary: #151c2c;
+  --bg-soft: #182034;
+  --text: #fff;
+  --text-soft: #b7bac1;
+}
+
+/* Admin Panel Scrollbar */
+.admin-layout::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-layout::-webkit-scrollbar-track {
+  background: #151c2c;
+}
+
+.admin-layout::-webkit-scrollbar-thumb {
+  background: #182034;
+  border-radius: 4px;
+}
+
+.admin-layout::-webkit-scrollbar-thumb:hover {
+  background: #2d3748;
+}
+
+html {
+  background: #282c33;
+  overflow-x: hidden; /* Prevent horizontal scroll due to scaling */
+}
+
+html,
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #282c33;
+  color: #ffffff;
+  font-family: 'Fira Code', monospace;
+}
+
+/* Portfolio scaling - sadece admin olmayan sayfalar için */
+body:not(:has(.admin-layout)) {
+  transform: scale(0.8);
+  transform-origin: top left;
+  width: 125%; /* 100% / 0.8 = 125% to compensate for scaling */
+  height: 125%;
+}
+
+/* Admin panel için normal body */
+body:has(.admin-layout) {
+  transform: none;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Admin layout container full height */
+.admin-layout {
+  height: 100vh !important;
+  min-height: 100vh !important;
+  width: 100% !important;
+}
+
+
+/* Hamburger menu styles */
+#hamburger-button {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+#hamburger-button::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 5px;
+  width: 24px;
+  height: 2px;
+  background: #d9d9d9;
+  transition: all 0.5s ease;
+}
+#hamburger-button::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 9px;
+  top: 12px;
+  width: 15px;
+  height: 2px;
+  background: #d9d9d9;
+  transition: all 0.5s ease;
+}
+
+#hamburger-close {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+#hamburger-close::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 10px;
+  width: 24px;
+  height: 2px;
+  background: #d9d9d9;
+  transform: rotate(225deg);
+  transition: all 0.5s ease;
+}
+#hamburger-close::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 10px;
+  width: 24px;
+  height: 2px;
+  background: #d9d9d9;
+  transform: rotate(315deg);
+  transition: all 0.5s ease;
+}
+
+#mainNav {
+  transition: all 0.5s ease;
 }
