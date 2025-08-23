@@ -1,0 +1,7 @@
+label:hover .upload-text {
+  display: block;
+}
+
+label:hover .image-hover {
+  opacity: 0.2;
+}
