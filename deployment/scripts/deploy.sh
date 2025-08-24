@@ -8,7 +8,7 @@ set -e
 echo "🚀 Starting Portfolio V2 Deployment..."
 
 # Configuration
-PROJECT_DIR="/home/serkan/portfolio-v2"
+PROJECT_DIR="/home/serkanursavas/projects/portfolio-v2"
 NGINX_SITES_DIR="/etc/nginx/sites-available"
 NGINX_ENABLED_DIR="/etc/nginx/sites-enabled"
 SYSTEMD_DIR="/etc/systemd/system"
@@ -52,7 +52,7 @@ log_info "Changed to project directory: $PROJECT_DIR"
 
 # Pull latest changes
 log_info "Pulling latest changes from Git..."
-git pull origin main
+git pull origin master
 
 # Install/update dependencies
 log_info "Installing/updating Node.js dependencies..."

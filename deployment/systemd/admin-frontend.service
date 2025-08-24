@@ -5,8 +5,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=serkan
-WorkingDirectory=/home/serkan/portfolio-v2
+User=serkanursavas
+WorkingDirectory=/home/serkanursavas/projects/portfolio-v2
 Environment=NODE_ENV=production
 Environment=NEXT_PUBLIC_API_URL=https://admin.serkanursavas.me
 Environment=PORT=4000
@@ -23,7 +23,7 @@ SyslogIdentifier=admin-frontend
 NoNewPrivileges=yes
 ProtectHome=yes
 ProtectSystem=strict
-ReadWritePaths=/home/serkan/portfolio-v2
+ReadWritePaths=/home/serkanursavas/projects/portfolio-v2
 
 [Install]
 WantedBy=multi-user.target
