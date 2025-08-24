@@ -119,6 +119,16 @@ sudo nginx -t
 log_info "Starting portfolio v2 backend..."
 sudo systemctl restart portfolio-v2-backend
 
+# Backend health check
+log_info "Checking backend health..."
+sleep 3
+if curl -s http://localhost:8082/health >/dev/null; then
+    log_info "✅ Backend health check passed"
+else
+    log_warn "⚠️ Backend health check failed, checking logs..."
+    sudo journalctl -u portfolio-v2-backend --no-pager -n 5
+fi
+
 log_info "Starting portfolio v2 frontend with fresh build..."
 sudo systemctl start portfolio-v2-frontend
 

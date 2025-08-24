@@ -10,6 +10,7 @@ WorkingDirectory=/home/serkanursavas/projects/portfolio-v2/backend
 Environment=GIN_MODE=release
 Environment=REDIS_URL=redis://localhost:6379
 Environment=PORT=8082
+EnvironmentFile=/home/serkanursavas/projects/portfolio-v2/backend/.env
 ExecStart=/home/serkanursavas/projects/portfolio-v2/backend/portfolio-backend
 Restart=always
 RestartSec=10
