@@ -21,13 +21,13 @@ RestartSec=10
 StandardOutput=journal
 StandardError=journal
 
-# Security
-NoNewPrivileges=yes
-ProtectHome=yes
-ProtectSystem=strict
-ReadWritePaths=/home/serkanursavas/projects/portfolio-v2/backend/uploads
-ReadWritePaths=/home/serkanursavas/projects/portfolio-v2/backend/blog-upload
-ReadWritePaths=/home/serkanursavas/projects/portfolio-v2/backend/skills-upload
+# Security - Relaxed for debugging
+NoNewPrivileges=no
+# ProtectHome=yes
+# ProtectSystem=strict
+# ReadWritePaths=/home/serkanursavas/projects/portfolio-v2/backend/uploads
+# ReadWritePaths=/home/serkanursavas/projects/portfolio-v2/backend/blog-upload
+# ReadWritePaths=/home/serkanursavas/projects/portfolio-v2/backend/skills-upload
 
 [Install]
 WantedBy=multi-user.target
