@@ -213,6 +213,8 @@ func setupRoutes(router *gin.Engine, cfg *config.Config) {
 			"status":  "healthy",
 			"message": "Portfolio Backend API is running",
 			"version": "1.0.0",
+			"deployment_test": "🔵 Backend Auto Deployment Test - Mavi versiyon!",
+			"timestamp": time.Now().Format("2006-01-02 15:04:05"),
 		})
 	})
 
