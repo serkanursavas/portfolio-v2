@@ -77,15 +77,12 @@ log_info "Copying systemd service files..."
 sudo cp deployment/systemd/*.service $SYSTEMD_DIR/
 sudo systemctl daemon-reload
 
-# Copy nginx configuration files (requires sudo)
-log_info "Copying nginx configuration files..."
-sudo cp deployment/nginx/*.conf $NGINX_SITES_DIR/
-
-# Enable nginx sites
-log_info "Enabling nginx sites..."
-sudo ln -sf $NGINX_SITES_DIR/serkanursavas.me.conf $NGINX_ENABLED_DIR/
-# Skip admin site until SSL certificate is configured
-# sudo ln -sf $NGINX_SITES_DIR/admin.serkanursavas.me.conf $NGINX_ENABLED_DIR/
+# Copy simple nginx configuration (IP-based, no SSL)
+log_info "Copying simple nginx configuration..."
+sudo cp deployment/nginx/simple.conf $NGINX_SITES_DIR/
+sudo rm -f $NGINX_ENABLED_DIR/serkanursavas.me.conf
+sudo rm -f $NGINX_ENABLED_DIR/admin.serkanursavas.me.conf
+sudo ln -sf $NGINX_SITES_DIR/simple.conf $NGINX_ENABLED_DIR/
 
 # Test nginx configuration
 log_info "Testing nginx configuration..."
@@ -122,12 +119,12 @@ echo "Nginx Status:"
 systemctl is-active nginx && echo "✅ Nginx is running" || echo "❌ Nginx failed to start"
 
 log_info "Deployment completed!"
-log_info "Portfolio: https://serkanursavas.me"
-log_info "Admin Panel: https://admin.serkanursavas.me"
+log_info "Portfolio: http://147.93.126.10:8090"
+log_info "Portfolio (alt): http://147.93.126.10:80"
 
 echo ""
-log_warn "Don't forget to:"
-log_warn "1. Set up SSL certificates with: sudo certbot --nginx -d serkanursavas.me -d admin.serkanursavas.me"
-log_warn "2. Configure DNS A records for both domains"
-log_warn "3. Test both applications in browser"
-log_warn "4. Check logs: journalctl -u service-name -f"
+log_warn "Test the application:"
+log_warn "1. Frontend: http://147.93.126.10:8090"
+log_warn "2. Backend API: http://147.93.126.10:8082/health"
+log_warn "3. Check logs: journalctl -u portfolio-frontend -f"
+log_warn "4. Check logs: journalctl -u portfolio-backend -f"
