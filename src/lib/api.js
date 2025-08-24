@@ -61,7 +61,7 @@ async function apiRequest(endpoint, options = {}) {
  */
 export async function getSkills() {
   try {
-    const response = await apiRequest('/api/skills');
+    const response = await apiRequest('/api/v1/skills');
     
     // Filter out empty categories - only show categories that have actual skills
     const actualCategories = [];
@@ -132,7 +132,7 @@ export async function getSkillsByCategory(category) {
  */
 export async function getProjects() {
   try {
-    const response = await apiRequest('/api/projects');
+    const response = await apiRequest('/api/v1/projects');
     
     // V1 format: {count: number, projects: [...]}
     return {

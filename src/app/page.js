@@ -1,6 +1,9 @@
 import HomeClient from '@/components/HomeClient';
 import { getProjects, getSkills } from '@/lib/api';
 
+// Enable ISR - revalidate every 60 seconds
+export const revalidate = 60;
+
 export default async function Home() {
   // Fetch data from API
   const { projects = [] } = await getProjects();

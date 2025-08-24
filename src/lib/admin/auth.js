@@ -6,7 +6,8 @@ const login = async credentials => {
   try {
     // Simple hardcoded authentication for now
     // TODO: Replace with Go API call for user authentication
-    if (credentials.username === 'admin' && credentials.password === 'password123') {
+    // This is deprecated code - authentication now handled by Go API
+    if (credentials.username === 'admin' && credentials.password === 'deprecated') {
       return {
         username: 'admin',
         img: '/pp.jpg'

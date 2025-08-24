@@ -8,13 +8,56 @@ import { useEffect, useState } from 'react';
 
 export default function Works() {
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Fetch projects (tracking otomatik AnalyticsProvider'da yapılıyor)
-    getProjects().then(({ projects = [] }) => {
-      setProjects(projects);
-    });
+    const fetchProjects = async () => {
+      try {
+        setLoading(true);
+        const { projects = [] } = await getProjects();
+        setProjects(projects);
+        setError(null);
+      } catch (err) {
+        console.error('Failed to load projects:', err);
+        setError('Failed to load projects');
+        setProjects([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
   }, []);
+  if (loading) {
+    return (
+      <AnimatedPage>
+        <PageTitle title="projects" subtitle="List of my projects" />
+        <div className="mt-16 flex justify-center">
+          <div className="w-16 h-16 border-4 border-grey border-l-primary rounded-full animate-spin"></div>
+        </div>
+      </AnimatedPage>
+    );
+  }
+
+  if (error) {
+    return (
+      <AnimatedPage>
+        <PageTitle title="projects" subtitle="List of my projects" />
+        <div className="mt-16 text-center text-red-500">
+          <p>{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 border border-primary px-4 py-2 hover:bg-primary/20 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </AnimatedPage>
+    );
+  }
+
   return (
     <AnimatedPage>
       <PageTitle
