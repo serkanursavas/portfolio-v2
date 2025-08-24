@@ -58,9 +58,9 @@ git pull origin master
 log_info "Installing/updating Node.js dependencies..."
 npm ci
 
-# Stop frontend service before build
-log_info "Stopping frontend service before build..."
-sudo systemctl stop portfolio-frontend || true
+# Stop portfolio v2 frontend service before build
+log_info "Stopping portfolio v2 frontend service before build..."
+sudo systemctl stop portfolio-v2-frontend || true
 
 # Build Next.js application
 log_info "Building Next.js application..."
@@ -93,43 +93,36 @@ log_info "Copying systemd service files..."
 sudo cp deployment/systemd/*.service $SYSTEMD_DIR/
 sudo systemctl daemon-reload
 
-# Copy simple nginx configuration (IP-based, no SSL)
-log_info "Copying simple nginx configuration..."
-# First disable old sites completely
-sudo rm -f $NGINX_ENABLED_DIR/*
+# Copy simple nginx configuration (IP-based, no SSL) - Only if not exists
+log_info "Updating nginx configuration..."
 sudo cp deployment/nginx/simple.conf $NGINX_SITES_DIR/
-sudo ln -sf $NGINX_SITES_DIR/simple.conf $NGINX_ENABLED_DIR/portfolio.conf
+# Only create symlink if it doesn't exist (don't remove other sites)
+if [ ! -L "$NGINX_ENABLED_DIR/portfolio.conf" ]; then
+    sudo ln -sf $NGINX_SITES_DIR/simple.conf $NGINX_ENABLED_DIR/portfolio.conf
+fi
 
 # Test nginx configuration
 log_info "Testing nginx configuration..."
 sudo nginx -t
 
-# Restart services
-log_info "Restarting services..."
-sudo systemctl restart portfolio-backend
-sudo systemctl restart portfolio-frontend
-# Skip admin frontend until properly configured
-# sudo systemctl restart admin-frontend
+# Restart only portfolio v2 services
+log_info "Restarting portfolio v2 services..."
+sudo systemctl restart portfolio-v2-backend
+sudo systemctl restart portfolio-v2-frontend
 sudo systemctl reload nginx
 
 # Enable services to start on boot
-log_info "Enabling services to start on boot..."
-sudo systemctl enable portfolio-backend
-sudo systemctl enable portfolio-frontend
-# Skip admin frontend until properly configured
-# sudo systemctl enable admin-frontend
+log_info "Enabling portfolio v2 services to start on boot..."
+sudo systemctl enable portfolio-v2-backend
+sudo systemctl enable portfolio-v2-frontend
 
-# Check service status
-log_info "Checking service status..."
-echo "Backend Status:"
-systemctl is-active portfolio-backend && echo "✅ Backend is running" || echo "❌ Backend failed to start"
+# Check portfolio v2 service status
+log_info "Checking portfolio v2 service status..."
+echo "V2 Backend Status:"
+systemctl is-active portfolio-v2-backend && echo "✅ V2 Backend is running" || echo "❌ V2 Backend failed to start"
 
-echo "Frontend Status:"
-systemctl is-active portfolio-frontend && echo "✅ Frontend is running" || echo "❌ Frontend failed to start"
-
-# Skip admin panel status check until properly configured
-# echo "Admin Panel Status:"
-# systemctl is-active admin-frontend && echo "✅ Admin Panel is running" || echo "❌ Admin Panel failed to start"
+echo "V2 Frontend Status:"
+systemctl is-active portfolio-v2-frontend && echo "✅ V2 Frontend is running" || echo "❌ V2 Frontend failed to start"
 
 echo "Nginx Status:"
 systemctl is-active nginx && echo "✅ Nginx is running" || echo "❌ Nginx failed to start"
@@ -142,5 +135,5 @@ echo ""
 log_warn "Test the application:"
 log_warn "1. Frontend: http://147.93.126.10:8090"
 log_warn "2. Backend API: http://147.93.126.10:8082/health"
-log_warn "3. Check logs: journalctl -u portfolio-frontend -f"
-log_warn "4. Check logs: journalctl -u portfolio-backend -f"
+log_warn "3. Check logs: journalctl -u portfolio-v2-frontend -f"
+log_warn "4. Check logs: journalctl -u portfolio-v2-backend -f"

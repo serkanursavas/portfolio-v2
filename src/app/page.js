@@ -14,8 +14,8 @@ export default async function Home() {
   
   return (
     <>
-      <div className="w-full bg-green-500 text-white text-center py-2 text-sm font-bold">
-        🧪 PORTFOLIO V2 TEST BANNER - Manuel Pull Test
+      <div className="w-full bg-red-500 text-white text-center py-2 text-sm font-bold">
+        🔥 AUTO DEPLOYMENT TEST - GitHub Actions Workflow Test!
       </div>
       <HomeClient 
         projects={featuredProjects} 
