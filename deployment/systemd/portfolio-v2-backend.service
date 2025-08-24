@@ -1,0 +1,33 @@
+[Unit]
+Description=Portfolio V2 Backend API
+Documentation=https://go.dev/doc/
+After=network.target redis.service
+
+[Service]
+Type=simple
+User=serkanursavas
+WorkingDirectory=/home/serkanursavas/projects/portfolio-v2/backend
+Environment=GIN_MODE=release
+Environment=REDIS_URL=redis://localhost:6379
+Environment=PORT=8082
+ExecStart=/home/serkanursavas/projects/portfolio-v2/backend/portfolio-backend
+Restart=always
+RestartSec=10
+
+# Build command (run manually): go build -o portfolio-backend main.go
+
+# Logging
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=portfolio-v2-backend
+
+# Security
+NoNewPrivileges=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/home/serkanursavas/projects/portfolio-v2/backend/uploads
+ReadWritePaths=/home/serkanursavas/projects/portfolio-v2/backend/blog-upload
+ReadWritePaths=/home/serkanursavas/projects/portfolio-v2/backend/skills-upload
+
+[Install]
+WantedBy=multi-user.target
