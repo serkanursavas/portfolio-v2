@@ -58,12 +58,25 @@ git pull origin master
 log_info "Installing/updating Node.js dependencies..."
 npm ci
 
+# Stop frontend service before build
+log_info "Stopping frontend service before build..."
+sudo systemctl stop portfolio-frontend || true
+
 # Build Next.js application
 log_info "Building Next.js application..."
 # Force clean build to avoid cache issues
 rm -rf .next
 rm -rf node_modules/.cache
+rm -rf ~/.npm/_cacache
 npm run build
+
+# Verify build success
+if [ ! -d ".next" ]; then
+    log_error "Build failed - .next directory not created"
+    exit 1
+fi
+
+log_info "Build verification successful"
 
 # Build Go backend
 log_info "Building Go backend..."
