@@ -13,10 +13,16 @@ export default async function Home() {
   const featuredProjects = projects.slice(0, 3);
   
   return (
-    <HomeClient 
-      projects={featuredProjects} 
-      categories={categories}
-      skills={skills}
-    />
+    <>
+      {/* Test Bar - Remove after deployment test */}
+      <div className="w-full bg-red-500 text-white text-center py-2 text-sm font-bold">
+        🚀 DEPLOYMENT TEST - GitHub Actions Working! 
+      </div>
+      <HomeClient 
+        projects={featuredProjects} 
+        categories={categories}
+        skills={skills}
+      />
+    </>
   );
 }
