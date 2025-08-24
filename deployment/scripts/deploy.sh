@@ -79,10 +79,10 @@ sudo systemctl daemon-reload
 
 # Copy simple nginx configuration (IP-based, no SSL)
 log_info "Copying simple nginx configuration..."
+# First disable old sites completely
+sudo rm -f $NGINX_ENABLED_DIR/*
 sudo cp deployment/nginx/simple.conf $NGINX_SITES_DIR/
-sudo rm -f $NGINX_ENABLED_DIR/serkanursavas.me.conf
-sudo rm -f $NGINX_ENABLED_DIR/admin.serkanursavas.me.conf
-sudo ln -sf $NGINX_SITES_DIR/simple.conf $NGINX_ENABLED_DIR/
+sudo ln -sf $NGINX_SITES_DIR/simple.conf $NGINX_ENABLED_DIR/portfolio.conf
 
 # Test nginx configuration
 log_info "Testing nginx configuration..."
