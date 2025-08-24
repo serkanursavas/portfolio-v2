@@ -54,17 +54,17 @@ log_info "Changed to project directory: $PROJECT_DIR"
 log_info "Pulling latest changes from Git..."
 git pull origin master
 
+# Stop portfolio v2 frontend service FIRST
+log_info "Stopping portfolio v2 frontend service before any changes..."
+sudo systemctl stop portfolio-v2-frontend || true
+
 # Install/update dependencies
 log_info "Installing/updating Node.js dependencies..."
 npm ci
 
-# Stop portfolio v2 frontend service before build
-log_info "Stopping portfolio v2 frontend service before build..."
-sudo systemctl stop portfolio-v2-frontend || true
-
-# Build Next.js application
-log_info "Building Next.js application..."
-# Force clean build to avoid cache issues
+# Build Next.js application with complete cache cleanup
+log_info "Building Next.js application with clean cache..."
+# Manuel süreçte yaptığımız gibi tam temizlik
 rm -rf .next
 rm -rf node_modules/.cache
 rm -rf ~/.npm/_cacache
@@ -77,6 +77,16 @@ if [ ! -d ".next" ]; then
 fi
 
 log_info "Build verification successful"
+
+# CSS files doğrulaması (manuel süreçte yaptığımız gibi)
+log_info "Checking CSS files..."
+if [ -d ".next/static/css" ] && [ "$(ls -A .next/static/css)" ]; then
+    log_info "CSS files generated successfully:"
+    ls -la .next/static/css/
+else
+    log_error "CSS files not generated properly"
+    exit 1
+fi
 
 # Build Go backend
 log_info "Building Go backend..."
@@ -105,10 +115,19 @@ fi
 log_info "Testing nginx configuration..."
 sudo nginx -t
 
-# Restart only portfolio v2 services
-log_info "Restarting portfolio v2 services..."
+# Start services step by step (manuel süreç gibi)
+log_info "Starting portfolio v2 backend..."
 sudo systemctl restart portfolio-v2-backend
-sudo systemctl restart portfolio-v2-frontend
+
+log_info "Starting portfolio v2 frontend with fresh build..."
+sudo systemctl start portfolio-v2-frontend
+
+# Wait for services to stabilize
+log_info "Waiting for services to stabilize..."
+sleep 5
+
+# Reload nginx configuration
+log_info "Reloading nginx..."
 sudo systemctl reload nginx
 
 # Enable services to start on boot
@@ -116,16 +135,43 @@ log_info "Enabling portfolio v2 services to start on boot..."
 sudo systemctl enable portfolio-v2-backend
 sudo systemctl enable portfolio-v2-frontend
 
-# Check portfolio v2 service status
-log_info "Checking portfolio v2 service status..."
+# Detaylı servis durumu kontrolü (manuel süreç gibi)
+log_info "Checking portfolio v2 service status in detail..."
 echo "V2 Backend Status:"
-systemctl is-active portfolio-v2-backend && echo "✅ V2 Backend is running" || echo "❌ V2 Backend failed to start"
+if systemctl is-active portfolio-v2-backend >/dev/null; then
+    echo "✅ V2 Backend is running"
+else
+    echo "❌ V2 Backend failed to start"
+    log_warn "Backend logs:"
+    sudo journalctl -u portfolio-v2-backend --no-pager -n 3
+fi
 
 echo "V2 Frontend Status:"
-systemctl is-active portfolio-v2-frontend && echo "✅ V2 Frontend is running" || echo "❌ V2 Frontend failed to start"
+if systemctl is-active portfolio-v2-frontend >/dev/null; then
+    echo "✅ V2 Frontend is running"
+    # Port kontrolü
+    if sudo ss -tlnp | grep -q ":3000.*next-server"; then
+        echo "✅ Frontend listening on port 3000"
+    else
+        log_warn "Frontend not listening on port 3000"
+    fi
+else
+    echo "❌ V2 Frontend failed to start"
+    log_warn "Frontend logs:"
+    sudo journalctl -u portfolio-v2-frontend --no-pager -n 3
+fi
 
 echo "Nginx Status:"
 systemctl is-active nginx && echo "✅ Nginx is running" || echo "❌ Nginx failed to start"
+
+# Final site accessibility test (manuel süreçte yaptığımız gibi)
+log_info "Testing site accessibility..."
+sleep 2
+if curl -s http://localhost:8090/ | grep -q "bg-red-500\|bg-green-500"; then
+    log_info "✅ Site is accessible and banner is visible"
+else
+    log_warn "⚠️ Site may not be fully accessible yet"
+fi
 
 log_info "Deployment completed!"
 log_info "Portfolio: http://147.93.126.10:8090"
