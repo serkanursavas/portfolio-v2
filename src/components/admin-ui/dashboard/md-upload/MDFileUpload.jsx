@@ -5,7 +5,7 @@ import { MdUpload, MdDescription, MdCheck, MdError } from 'react-icons/md'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8082'
 
-const MDFileUpload = ({ onUploadSuccess, onUploadError }) => {
+const MDFileUpload = ({ onUploadSuccess, onUploadError, multiple = false }) => {
   const [files, setFiles] = useState([])
   const [uploading, setUploading] = useState(false)
   const [dragActive, setDragActive] = useState(false)
@@ -95,52 +95,17 @@ const MDFileUpload = ({ onUploadSuccess, onUploadError }) => {
       const result = await response.json()
 
       if (!response.ok) {
-        throw new Error(result.details || result.error || 'Upload failed')
-        }
-
-        // Update file statuses
-        const updatedFiles = files.map(f => {
-          const uploadResult = result.results.find(r => r.filename === f.file.name)
-          return {
-            ...f,
-            status: uploadResult?.success ? 'success' : 'error',
-            error: uploadResult?.error,
-            slug: uploadResult?.slug
-          }
-        })
-
-        setFiles(updatedFiles)
-        onUploadSuccess?.(result)
-
-      } else {
-        // Single upload
-        const file = files[0]
-        const response = await fetch(`${API_BASE_URL}/api/v1/blog/import-md`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            content: file.content,
-            filename: file.file.name
-          })
-        })
-
-        const result = await response.json()
-
-        if (!response.ok) {
-          throw new Error(result.error || 'Upload failed')
-        }
-
-        const updatedFiles = [{
-          ...file,
-          status: 'success',
-          slug: result.post.slug
-        }]
-
-        setFiles(updatedFiles)
-        onUploadSuccess?.(result)
+        throw new Error(result.error || 'Upload failed')
       }
+
+      const updatedFiles = [{
+        ...file,
+        status: 'success',
+        slug: result.post?.slug || result.slug
+      }]
+
+      setFiles(updatedFiles)
+      onUploadSuccess?.(result)
 
     } catch (error) {
       const updatedFiles = files.map(f => ({
