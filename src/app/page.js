@@ -13,15 +13,10 @@ export default async function Home() {
   const featuredProjects = projects.slice(0, 3);
   
   return (
-    <>
-      <div className="w-full bg-blue-500 text-white text-center py-2 text-sm font-bold">
-        💙 MAVİ BANNER TEST - Manuel deployment kontrolü!
-      </div>
-      <HomeClient 
-        projects={featuredProjects} 
-        categories={categories}
-        skills={skills}
-      />
-    </>
+    <HomeClient 
+      projects={featuredProjects} 
+      categories={categories}
+      skills={skills}
+    />
   );
 }
