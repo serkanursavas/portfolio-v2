@@ -8,7 +8,7 @@ Type=simple
 User=serkanursavas
 WorkingDirectory=/home/serkanursavas/projects/portfolio-v2
 Environment=NODE_ENV=production
-Environment=NEXT_PUBLIC_API_URL=https://serkanursavas.me
+Environment=NEXT_PUBLIC_API_URL=http://147.93.126.10:8082
 Environment=PORT=3000
 ExecStart=/usr/bin/npm run start
 Restart=always
