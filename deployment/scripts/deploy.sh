@@ -60,6 +60,9 @@ npm ci
 
 # Build Next.js application
 log_info "Building Next.js application..."
+# Force clean build to avoid cache issues
+rm -rf .next
+rm -rf node_modules/.cache
 npm run build
 
 # Build Go backend
