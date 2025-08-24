@@ -14,8 +14,8 @@ export default async function Home() {
   
   return (
     <>
-      <div className="w-full bg-green-500 text-white text-center py-2 text-sm font-bold">
-        ✅ MANUEL DEPLOY SCRIPT TEST - Sunucu üzerinde hazır!
+      <div className="w-full bg-orange-500 text-white text-center py-2 text-sm font-bold">
+        🧡 TURUNCU BANNER TEST - Deployment script hazır!
       </div>
       <HomeClient 
         projects={featuredProjects} 
