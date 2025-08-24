@@ -9,6 +9,7 @@ User=serkanursavas
 WorkingDirectory=/home/serkanursavas/projects/portfolio-v2
 Environment=NODE_ENV=production
 Environment=NEXT_PUBLIC_API_URL=https://serkanursavas.me
+Environment=PORT=3000
 ExecStart=/usr/bin/npm run start
 Restart=always
 RestartSec=10
