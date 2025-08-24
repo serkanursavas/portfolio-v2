@@ -54,8 +54,40 @@ log_info "Changed to project directory: $PROJECT_DIR"
 log_info "Pulling latest changes from Git..."
 git pull origin master
 
-# Stop portfolio v2 frontend service FIRST
-log_info "Stopping portfolio v2 frontend service before any changes..."
+# Enable maintenance mode
+log_info "Enabling maintenance mode..."
+sudo cp deployment/nginx/maintenance.html /var/www/html/maintenance.html 2>/dev/null || sudo mkdir -p /var/www/html && sudo cp deployment/nginx/maintenance.html /var/www/html/maintenance.html
+# Create maintenance nginx config
+sudo tee /etc/nginx/sites-available/maintenance.conf > /dev/null << 'EOF'
+server {
+    listen 80 default_server;
+    listen 8090 default_server;
+    server_name _;
+    
+    location / {
+        root /var/www/html;
+        try_files /maintenance.html =503;
+        add_header Retry-After 60 always;
+    }
+    
+    # Allow health checks
+    location /health {
+        proxy_pass http://localhost:8082;
+    }
+    
+    error_log /var/log/nginx/maintenance.error.log;
+    access_log /var/log/nginx/maintenance.access.log;
+}
+EOF
+# Backup current config and enable maintenance
+sudo cp /etc/nginx/sites-enabled/portfolio.conf /tmp/portfolio.conf.backup 2>/dev/null || true
+sudo rm -f /etc/nginx/sites-enabled/portfolio.conf
+sudo ln -sf /etc/nginx/sites-available/maintenance.conf /etc/nginx/sites-enabled/maintenance.conf
+sudo nginx -t && sudo systemctl reload nginx
+log_info "🚧 Maintenance mode enabled - users see update page"
+
+# Stop portfolio v2 frontend service
+log_info "Stopping portfolio v2 frontend service for deployment..."
 sudo systemctl stop portfolio-v2-frontend || true
 
 # Install/update dependencies
@@ -136,9 +168,12 @@ sudo systemctl start portfolio-v2-frontend
 log_info "Waiting for services to stabilize..."
 sleep 5
 
-# Reload nginx configuration
-log_info "Reloading nginx..."
-sudo systemctl reload nginx
+# Disable maintenance mode and restore normal operation
+log_info "Disabling maintenance mode..."
+sudo rm -f /etc/nginx/sites-enabled/maintenance.conf
+sudo cp /tmp/portfolio.conf.backup /etc/nginx/sites-enabled/portfolio.conf 2>/dev/null || sudo ln -sf /etc/nginx/sites-available/simple.conf /etc/nginx/sites-enabled/portfolio.conf
+sudo nginx -t && sudo systemctl reload nginx
+log_info "✅ Normal operation restored - site is live!"
 
 # Enable services to start on boot
 log_info "Enabling portfolio v2 services to start on boot..."
