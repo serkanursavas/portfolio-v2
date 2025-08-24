@@ -84,7 +84,8 @@ sudo cp deployment/nginx/*.conf $NGINX_SITES_DIR/
 # Enable nginx sites
 log_info "Enabling nginx sites..."
 sudo ln -sf $NGINX_SITES_DIR/serkanursavas.me.conf $NGINX_ENABLED_DIR/
-sudo ln -sf $NGINX_SITES_DIR/admin.serkanursavas.me.conf $NGINX_ENABLED_DIR/
+# Skip admin site until SSL certificate is configured
+# sudo ln -sf $NGINX_SITES_DIR/admin.serkanursavas.me.conf $NGINX_ENABLED_DIR/
 
 # Test nginx configuration
 log_info "Testing nginx configuration..."
@@ -94,14 +95,16 @@ sudo nginx -t
 log_info "Restarting services..."
 sudo systemctl restart portfolio-backend
 sudo systemctl restart portfolio-frontend
-sudo systemctl restart admin-frontend
+# Skip admin frontend until properly configured
+# sudo systemctl restart admin-frontend
 sudo systemctl reload nginx
 
 # Enable services to start on boot
 log_info "Enabling services to start on boot..."
 sudo systemctl enable portfolio-backend
 sudo systemctl enable portfolio-frontend
-sudo systemctl enable admin-frontend
+# Skip admin frontend until properly configured
+# sudo systemctl enable admin-frontend
 
 # Check service status
 log_info "Checking service status..."
@@ -111,8 +114,9 @@ systemctl is-active portfolio-backend && echo "✅ Backend is running" || echo "
 echo "Frontend Status:"
 systemctl is-active portfolio-frontend && echo "✅ Frontend is running" || echo "❌ Frontend failed to start"
 
-echo "Admin Panel Status:"
-systemctl is-active admin-frontend && echo "✅ Admin Panel is running" || echo "❌ Admin Panel failed to start"
+# Skip admin panel status check until properly configured
+# echo "Admin Panel Status:"
+# systemctl is-active admin-frontend && echo "✅ Admin Panel is running" || echo "❌ Admin Panel failed to start"
 
 echo "Nginx Status:"
 systemctl is-active nginx && echo "✅ Nginx is running" || echo "❌ Nginx failed to start"
