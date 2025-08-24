@@ -56,7 +56,7 @@ git pull origin master
 
 # Install/update dependencies
 log_info "Installing/updating Node.js dependencies..."
-npm ci --only=production
+npm ci
 
 # Build Next.js application
 log_info "Building Next.js application..."
