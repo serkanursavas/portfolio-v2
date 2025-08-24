@@ -16,10 +16,9 @@ RestartSec=10
 
 # Build command (run manually): go build -o portfolio-backend main.go
 
-# Logging
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=portfolio-v2-backend
+# Logging - using journal instead of obsolete syslog
+StandardOutput=journal
+StandardError=journal
 
 # Security
 NoNewPrivileges=yes
