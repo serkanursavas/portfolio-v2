@@ -60,6 +60,10 @@ export default function HomeClient({ projects, categories, skills }) {
 
   return (
     <AnimatedPage>
+      {/* Test Banner - Yeşil */}
+      <div className="w-full bg-green-500 text-white text-center py-3 px-4 mb-4">
+        🧪 Test Banner - Deployment Test - Yeşil Versiyon
+      </div>
       <main className="w-full">
         <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:mt-8 sm:items-center lg:gap-24">
           <div className="mt-8 text-white text-[24px] sm:text-[36px] space-y-6 font-medium sm:leading-[48px]">
