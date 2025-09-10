@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Calendar, Clock, Tag, ArrowLeft, Eye } from 'lucide-react'
 import AnimatedPage from '@/components/UI/AnimatedPage'
 import { getBlogPostBySlug, getBlogPosts } from '@/lib/api'
@@ -119,11 +120,13 @@ export default async function BlogPostPage({ params }) {
         {/* Featured Image */}
         {post?.featured_image && (
           <div className="mb-8 relative group">
-            <div className="relative overflow-hidden border border-grey bg-gradient-to-br from-background to-background/50">
-              <img
+            <div className="relative overflow-hidden border border-grey bg-gradient-to-br from-background to-background/50 h-80 md:h-96 lg:h-[500px]">
+              <Image
                 src={post.featured_image}
                 alt={post?.title || 'Blog post image'}
-                className="w-full h-80 md:h-96 lg:h-[500px] object-cover transition-transform duration-300 group-hover:scale-105"
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
               />
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
