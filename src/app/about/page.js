@@ -9,6 +9,9 @@ export const metadata = {
   description: "Learn more about Serkan Ursavas, a self-taught front-end developer based in Adana, Turkey.",
 };
 
+// Force no cache for about page to get fresh skill data
+export const revalidate = 0;
+
 // Helper function to group skills by category
 function getSkillsByCategory(skills, category) {
   return skills.filter(skill => skill.category === category);
