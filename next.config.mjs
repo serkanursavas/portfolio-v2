@@ -17,6 +17,16 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'serkanursavas.me',
+        pathname: '/skills-upload/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'serkanursavas.me',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
         hostname: '**', // Allow all HTTPS hostnames for development
       },
     ],

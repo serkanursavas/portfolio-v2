@@ -1,9 +1,6 @@
 // API Configuration
-// Use same-origin on the client (CSR) so requests go through nginx proxy (/api -> backend)
-// Use env/internal URL on the server (SSR/build) to reach the backend directly
-const API_BASE_URL = typeof window !== 'undefined'
-  ? ''
-  : (process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8082');
+// Always use the Go backend directly for all API calls (both client and server side)
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8082';
 
 // API Error handling
 class APIError extends Error {
