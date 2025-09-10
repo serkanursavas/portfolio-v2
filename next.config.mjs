@@ -16,6 +16,12 @@ const nextConfig = {
         pathname: '/skills-upload/**',
       },
       {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8082',
+        pathname: '/blog-upload/**',
+      },
+      {
         protocol: 'https',
         hostname: 'serkanursavas.me',
         pathname: '/skills-upload/**',
@@ -24,6 +30,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'serkanursavas.me',
         pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'serkanursavas.me',
+        pathname: '/blog-upload/**',
       },
       {
         protocol: 'https',

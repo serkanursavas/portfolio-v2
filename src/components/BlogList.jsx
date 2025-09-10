@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Search, Calendar, Clock, Tag } from 'lucide-react'
 import LoadingSpinner from './UI/LoadingSpinner'
 
@@ -96,10 +97,12 @@ export default function BlogList({ initialPosts, allTags }) {
                 <div className="md:w-80 lg:w-96 flex-shrink-0">
                   <Link href={`/blog/${post.slug}`}>
                     <div className="relative overflow-hidden group h-48 md:h-full">
-                      <img
-                        src={post.featured_image || `http://localhost:8082/blog-upload/blog-${post.slug}.png`}
+                      <Image
+                        src={post.featured_image || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8082'}/blog-upload/blog-${post.slug}.png`}
                         alt={post.title}
-                        className="w-full h-full object-cover hover:opacity-80 transition-all duration-300 group-hover:scale-105"
+                        fill
+                        className="object-cover hover:opacity-80 transition-all duration-300 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 320px, 384px"
                         onError={(e) => {
                           e.target.src = '/next.png'
                         }}

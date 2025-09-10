@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import Image from 'next/image'
 import { MdUpload, MdImage, MdCheck, MdError, MdClose } from 'react-icons/md'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8082'
@@ -163,11 +164,13 @@ const BlogImageUpload = ({ onUploadSuccess, onUploadError, currentImage, onImage
         ) : (
           <div className="space-y-4">
             {/* Image Preview */}
-            <div className="relative">
-              <img 
+            <div className="relative w-full h-48 rounded-md overflow-hidden">
+              <Image 
                 src={previewImage} 
                 alt="Blog featured image" 
-                className="w-full h-48 object-cover rounded-md"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
               <button
                 type="button"
