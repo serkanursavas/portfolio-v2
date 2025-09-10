@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import Image from 'next/image'
 
 const FileUpload = ({
   onUploadSuccess,
@@ -202,11 +203,13 @@ const FileUpload = ({
       {/* V1-style: Show current image if exists */}
       {currentImage ? (
         <div className="relative group">
-          <div className="w-full aspect-video bg-bgPrimary/20 rounded border border-grey/20 overflow-hidden">
-            <img
+          <div className="w-full aspect-video bg-bgPrimary/20 rounded border border-grey/20 overflow-hidden relative">
+            <Image
               src={currentImage}
               alt="Current image"
-              className="w-full h-full object-contain bg-bgPrimary/10"
+              fill
+              className="object-contain bg-bgPrimary/10"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded flex items-center justify-center">
